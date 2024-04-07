@@ -1,10 +1,14 @@
+import css from "./ErrorMessage.module.css";
+
 const ErrorMessage = ({ message = "" }) => {
   return (
-    <b>
-      {message.length > 0
-        ? message
-        : "❌ Whoops, something went wrong! Please try reloading this page!"}
-    </b>
+    <div className={css.errorText}>
+      <b>
+        {message.length > 0
+          ? message
+          : "❌ Whoops, something went wrong! Please try reloading this page!"}
+      </b>
+    </div>
   );
 };
 
