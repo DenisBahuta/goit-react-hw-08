@@ -21,7 +21,7 @@ const INITIAL_FORM_DATA = {
   password: "",
 };
 
-const RegistrationForm = ({ onRegister }) => {
+function RegistrationForm({ onRegister }) {
   const handleSubmit = (data, formActions) => {
     onRegister(data);
     formActions.resetForm();
@@ -64,6 +64,6 @@ const RegistrationForm = ({ onRegister }) => {
       </Form>
     </Formik>
   );
-};
+}
 
 export default RegistrationForm;

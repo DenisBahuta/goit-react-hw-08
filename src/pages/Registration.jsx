@@ -1,3 +1,4 @@
+import DocumentTitle from "../components/DocumentTitle";
 import { useDispatch } from "react-redux";
 import RegistrationForm from "../components/RegistrationForm/RegistrationForm";
 import { register } from "../redux/auth/operations";
@@ -11,6 +12,7 @@ const Registration = () => {
 
   return (
     <div>
+      <DocumentTitle>Registration</DocumentTitle>
       <RegistrationForm onRegister={onRegister} />
     </div>
   );

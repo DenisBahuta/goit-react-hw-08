@@ -21,7 +21,7 @@ const INITIAL_FORM_VALUES = {
   number: "",
 };
 
-const ContactForm = () => {
+function ContactForm() {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
@@ -62,6 +62,6 @@ const ContactForm = () => {
       </Form>
     </Formik>
   );
-};
+}
 
 export default ContactForm;

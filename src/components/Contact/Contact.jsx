@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/contacts/operations";
 
-const Contact = ({ id, name, number }) => {
+function Contact({ id, name, number }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
@@ -33,7 +33,7 @@ const Contact = ({ id, name, number }) => {
       </button>
     </div>
   );
-};
+}
 
 // Описание типов пропсов компонента Contact
 Contact.propTypes = {

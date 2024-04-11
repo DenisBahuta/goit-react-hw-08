@@ -1,6 +1,6 @@
 import css from "./ErrorMessage.module.css";
 
-const ErrorMessage = ({ message = "" }) => {
+function ErrorMessage({ message = "" }) {
   return (
     <div className={css.errorText}>
       <b>
@@ -10,6 +10,6 @@ const ErrorMessage = ({ message = "" }) => {
       </b>
     </div>
   );
-};
+}
 
 export default ErrorMessage;

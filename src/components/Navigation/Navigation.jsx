@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks";
 import css from "./Navigation.module.css";
 
-export const Navigation = () => {
+function Navigation() {
   const { isLoggedIn } = useAuth();
 
   return (
@@ -17,4 +17,6 @@ export const Navigation = () => {
       )}
     </nav>
   );
-};
+}
+
+export default Navigation;

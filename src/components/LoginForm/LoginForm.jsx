@@ -16,7 +16,7 @@ const INITIAL_FORM_DATA = {
   password: "",
 };
 
-const LoginForm = ({ onLogin }) => {
+function LoginForm({ onLogin }) {
   const handleSubmit = (data, formActions) => {
     onLogin(data);
     formActions.resetForm();
@@ -51,6 +51,6 @@ const LoginForm = ({ onLogin }) => {
       </Form>
     </Formik>
   );
-};
+}
 
 export default LoginForm;

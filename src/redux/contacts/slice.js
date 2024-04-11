@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { selectNameFilter } from "../filters/slice";
 import { fetchContacts, addContact, deleteContact } from "./operations";
 import { selectContacts } from "./selectors";
+import { selectNameFilter } from "../filters/selectors";
 
 // початковий стан Redux
 export const INITIAL_STATE = {

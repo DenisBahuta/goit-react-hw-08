@@ -13,7 +13,7 @@ import {
 
 // компонент ContactList рисует список контактов
 
-const ContactList = () => {
+function ContactList() {
   const visibleContacts = useSelector(selectFilteredContacts);
   const isLoading = useSelector(selectLoading);
   const isError = useSelector(selectError);
@@ -31,6 +31,6 @@ const ContactList = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default ContactList;

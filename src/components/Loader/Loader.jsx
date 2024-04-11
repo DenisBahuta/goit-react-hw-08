@@ -1,6 +1,6 @@
 import { DNA } from "react-loader-spinner";
 
-const Loader = () => {
+function Loader() {
   return (
     <DNA
       visible={true}
@@ -11,6 +11,6 @@ const Loader = () => {
       wrapperClass='dna-wrapper'
     />
   );
-};
+}
 
 export default Loader;
