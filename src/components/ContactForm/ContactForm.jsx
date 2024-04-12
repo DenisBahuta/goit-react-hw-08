@@ -7,12 +7,12 @@ import { addContact } from "../../redux/contacts/operations";
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string()
-    .min(3, "Too Short!")
+    .min(5, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
   number: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
+    .min(7, "Too Short!")
+    .max(15, "Too Long!")
     .required("Required"),
 });
 
@@ -46,16 +46,18 @@ function ContactForm() {
         <span className={css.errorMessage}>
           <ErrorMessage name='name' component='span' />
         </span>
-        <label className={css.label}>Number</label>
-        <Field
-          className={css.field}
-          placeholder='111-22-33'
-          type='text'
-          name='number'
-        />
-        <span className={css.errorMessage}>
-          <ErrorMessage name='number' component='span' />
-        </span>
+        <label className={css.label}>
+          <span className={css.labelText}>Number:</span>
+          <Field
+            className={css.field}
+            placeholder='+(380)-000-00-00'
+            type='text'
+            name='number'
+          />
+          <span className={css.errorMessage}>
+            <ErrorMessage name='number' component='span' />
+          </span>
+        </label>
         <button className={css.button} type='submit'>
           Add contact
         </button>

@@ -1,13 +1,15 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { isAnyOf } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact } from "./operations";
-import { selectContacts } from "./selectors";
-import { selectNameFilter } from "../filters/selectors";
+import { register, logIn, logOut } from "../auth/operations";
 
-// початковий стан Redux
+// Початковий стан Redux
 export const INITIAL_STATE = {
   items: [],
   loading: false,
   error: null,
+  isLoading: false,
+  isError: false,
 };
 
 const contactsSlice = createSlice({
@@ -39,21 +41,22 @@ const contactsSlice = createSlice({
         state.items = state.items.filter(
           (contact) => contact.id !== action.payload
         );
-      });
+      })
+      .addMatcher(
+        isAnyOf(register.pending, logIn.pending, logOut.pending),
+        (state) => {
+          state.isLoading = true;
+          state.isError = false;
+        }
+      )
+      .addMatcher(
+        isAnyOf(register.rejected, logIn.rejected, logOut.rejected),
+        (state) => {
+          state.isLoading = false;
+          state.isError = true;
+        }
+      );
   },
 });
 
-// export const { addContact, deleteContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
-
-// фильтрация коллекции
-export const selectFilteredContacts = createSelector(
-  [selectContacts, selectNameFilter],
-  (contacts, filter) => {
-    return contacts.filter(
-      (contact) =>
-        contact.name.toLowerCase().includes(filter.trim().toLowerCase()) ||
-        contact.number.toLowerCase().includes(filter.trim().toLowerCase())
-    );
-  }
-);

@@ -21,7 +21,7 @@ function Home() {
 
       <div style={styles.container}>
         <h1 style={styles.title}>
-          Hello User 👋
+          PHONE BOOK 📞📖
           <span role='img' aria-label='Greeting icon'></span>
         </h1>
       </div>
