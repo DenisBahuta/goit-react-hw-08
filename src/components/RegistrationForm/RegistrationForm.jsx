@@ -1,6 +1,8 @@
 import css from "./RegistrationForm.module.css";
 import { Field, Form, Formik } from "formik";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { register } from "../../redux/auth/operations";
 
 const UserRegisterSchema = Yup.object().shape({
   name: Yup.string()
@@ -21,9 +23,10 @@ const INITIAL_FORM_DATA = {
   password: "",
 };
 
-function RegistrationForm({ onRegister }) {
+function RegistrationForm() {
+  const dispatch = useDispatch();
   const handleSubmit = (data, formActions) => {
-    onRegister(data);
+    dispatch(register(data));
     formActions.resetForm();
   };
   return (
@@ -32,7 +35,7 @@ function RegistrationForm({ onRegister }) {
       initialValues={INITIAL_FORM_DATA}
       onSubmit={handleSubmit}
     >
-      <Form className={css.form} onSubmit={handleSubmit} autoComplete='off'>
+      <Form className={css.form} autoComplete='off'>
         <label className={css.label}>
           Username
           <Field

@@ -28,7 +28,7 @@ function LoginForm({ onLogin }) {
       initialValues={INITIAL_FORM_DATA}
       onSubmit={handleSubmit}
     >
-      <Form className={css.form} onSubmit={handleSubmit} autoComplete='off'>
+      <Form className={css.form} autoComplete='off'>
         <label className={css.label}>
           Email
           <Field
