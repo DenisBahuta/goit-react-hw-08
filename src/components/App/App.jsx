@@ -5,7 +5,6 @@ import { RestrictedRoute } from "../RestrictedRoute";
 import { lazy, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { refreshUser } from "../../redux/auth/operations";
-import { Toaster } from "react-hot-toast";
 import { useAuth } from "../../hooks";
 
 const Home = lazy(() => import("../../pages/Home"));
@@ -51,44 +50,8 @@ function App() {
           />
         </Route>
       </Routes>
-      <Toaster />
     </>
   );
 }
 
 export default App;
-
-// вариант 2
-
-// <Route
-//             path='/register'
-//             element={
-//               <RestrictedRoute>
-//                 <Registration />
-//               </RestrictedRoute>
-//             }
-//           />
-//           <Route
-//             path='/login'
-//             element={
-//               <RestrictedRoute>
-//                 <Login />
-//               </RestrictedRoute>
-//             }
-//           />
-//           <Route
-//             path='/contacts'
-//             element={
-//               <PrivateRoute>
-//                 <Contacts />
-//               </PrivateRoute>
-//             }
-//           />
-//           <Route
-//             path='/home'
-//             element={
-//               <PrivateRoute>
-//                 <Home />
-//               </PrivateRoute>
-//             }
-//           />

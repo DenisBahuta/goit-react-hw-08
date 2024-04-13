@@ -27,7 +27,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.userData = action.payload.user;
         state.token = action.payload.token;
-        state.isSignedIn = true;
+        state.isLoggedIn = true; // ошибка в нейминге
       })
       .addCase(logOut.fulfilled, () => {
         return INITIAL_STATE;

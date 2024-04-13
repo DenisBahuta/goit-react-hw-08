@@ -46,18 +46,17 @@ function ContactForm() {
         <span className={css.errorMessage}>
           <ErrorMessage name='name' component='span' />
         </span>
-        <label className={css.label}>
-          <span className={css.labelText}>Number:</span>
-          <Field
-            className={css.field}
-            placeholder='+(380)-000-00-00'
-            type='text'
-            name='number'
-          />
-          <span className={css.errorMessage}>
-            <ErrorMessage name='number' component='span' />
-          </span>
-        </label>
+        <label className={css.label}>Number </label>
+        <Field
+          className={css.field}
+          placeholder='+(380)-000-00-00'
+          type='text'
+          name='number'
+        />
+        <span className={css.errorMessage}>
+          <ErrorMessage name='number' component='span' />
+        </span>
+
         <button className={css.button} type='submit'>
           Add contact
         </button>
