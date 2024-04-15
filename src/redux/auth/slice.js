@@ -19,13 +19,13 @@ const authSlice = createSlice({
     builder
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = action.payload.user;
+        state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isSignedIn = true;
+        state.isLoggedIn = true;
       })
       .addCase(logIn.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = action.payload.user;
+        state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true; // ошибка в нейминге
       })
@@ -40,7 +40,7 @@ const authSlice = createSlice({
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.isRefreshing = false;
-        state.userData = action.payload;
+        state.user = action.payload;
         state.isSignedIn = true;
       })
       .addCase(refreshUser.rejected, (state) => {

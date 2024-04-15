@@ -103,3 +103,5 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(err.message);
   }
 });
+
+export default instance;
