@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import instance from "../auth/operations/";
+import axios from "axios";
 
 export const requestGetContacts = async () => {
   const { data } = await instance.get("/contacts");
@@ -24,7 +25,7 @@ export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",
   async (_, thunkAPI) => {
     try {
-      const { data } = await requestGetContacts("/contacts");
+      const data = await requestGetContacts("/contacts");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -52,6 +53,23 @@ export const deleteContact = createAsyncThunk(
     try {
       await requestDeleteContact(`/contacts/${contactId}`);
       return contactId;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// изменение контакта
+export const editContact = createAsyncThunk(
+  "contacts/editContact",
+  async ({ contactId, name, number }, thunkAPI) => {
+    try {
+      const data = await axios.patch(`/contacts/${contactId}`, {
+        name,
+        number,
+      });
+
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
