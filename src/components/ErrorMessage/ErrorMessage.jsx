@@ -6,7 +6,7 @@ function ErrorMessage({ message = "" }) {
       <b>
         {message.length > 0
           ? message
-          : "❌ Whoops, something went wrong! Please try reloading this page!"}
+          : "❌ Oops, something went wrong! Please try reloading this page!"}
       </b>
     </div>
   );

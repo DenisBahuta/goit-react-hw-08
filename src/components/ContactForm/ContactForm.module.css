@@ -35,3 +35,13 @@
 .errorMessage {
   color: red;
 }
+
+/* .inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 80%;
+  margin: 0 auto;
+  align-items: start;
+  position: relative;
+} */

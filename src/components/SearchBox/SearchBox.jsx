@@ -1,14 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useId } from "react";
 import css from "./SearchBox.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../../redux/filters/slice";
 import { selectNameFilter } from "../../redux/filters/selectors";
 
-function SearchBox() {
-  const dispatch = useDispatch();
-  const selectFilter = useSelector(selectNameFilter);
+const SearchBox = () => {
+  const searchTerm = useSelector(selectNameFilter);
+  const searchId = useId();
 
-  const handleFilterChange = (e) => {
-    dispatch(changeFilter(e.target.value)); // Відправлення екшену зміни фільтра
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    dispatch(changeFilter(value.trim().toLowerCase()));
   };
 
   return (
@@ -17,12 +21,14 @@ function SearchBox() {
       <input
         className={css.input}
         type='text'
+        name='Input'
         placeholder='Search'
-        value={selectFilter}
-        onChange={handleFilterChange}
+        onChange={handleChange}
+        id={searchId}
+        value={searchTerm}
       />
     </div>
   );
-}
+};
 
 export default SearchBox;

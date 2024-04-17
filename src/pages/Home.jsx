@@ -1,32 +1,26 @@
-import DocumentTitle from "../components/DocumentTitle";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { useAuth } from "../hooks/useAuth";
 
-const styles = {
-  container: {
-    minHeight: "calc(100vh - 50px)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontWeight: 500,
-    fontSize: 48,
-    textAlign: "center",
-  },
-};
+const Home = () => {
+  const { isSignedIn } = useAuth();
 
-function Home() {
   return (
-    <>
-      <DocumentTitle>Home</DocumentTitle>
-
-      <div style={styles.container}>
-        <h1 style={styles.title}>
-          PHONE BOOK 📞📖
-          <span role='img' aria-label='Greeting icon'></span>
-        </h1>
-      </div>
-    </>
+    <div>
+      <Helmet>
+        <title>PHONE BOOK 📞📖</title>
+      </Helmet>
+      {isSignedIn ? (
+        <Link to='/contacts' relative='path'>
+          You can use your contacts
+        </Link>
+      ) : (
+        <Link to='/login' relative='path'>
+          Please log in
+        </Link>
+      )}
+    </div>
   );
-}
+};
 
 export default Home;

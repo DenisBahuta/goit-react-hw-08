@@ -1,15 +1,19 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-
-import { register, logIn, logOut, refreshUser } from "./operations";
+import {
+  apiRegisterUser,
+  apiLoginUser,
+  apiRefreshUser,
+  apiLogoutUser,
+} from "./operations";
+import { toast } from "react-hot-toast";
 
 const INITIAL_STATE = {
-  user: {
-    name: null,
-    email: null,
-  },
+  user: null,
   token: null,
-  isLoggedIn: false,
+  isSignedIn: false,
   isRefreshing: false,
+  isLoading: false,
+  isError: false,
 };
 
 const authSlice = createSlice({
@@ -17,49 +21,61 @@ const authSlice = createSlice({
   initialState: INITIAL_STATE,
   extraReducers: (builder) =>
     builder
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(apiRegisterUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isLoggedIn = true;
-      })
-      .addCase(logIn.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isLoggedIn = true; // ошибка в нейминге
-      })
-      .addCase(logOut.fulfilled, () => {
-        return INITIAL_STATE;
+        state.isSignedIn = true;
+        toast.success("You have registered✅");
       })
 
-      //   REFRESH
-      .addCase(refreshUser.pending, (state) => {
+      .addCase(apiLoginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isSignedIn = true;
+        toast.success("You are logged in✅");
+      })
+
+      .addCase(apiRefreshUser.pending, (state) => {
         state.isRefreshing = true;
         state.isError = false;
       })
-      .addCase(refreshUser.fulfilled, (state, action) => {
+      .addCase(apiRefreshUser.fulfilled, (state, action) => {
         state.isRefreshing = false;
         state.user = action.payload;
         state.isSignedIn = true;
       })
-      .addCase(refreshUser.rejected, (state) => {
+      .addCase(apiRefreshUser.rejected, (state) => {
         state.isRefreshing = false;
         state.isError = true;
       })
 
+      .addCase(apiLogoutUser.fulfilled, () => {
+        return INITIAL_STATE;
+      })
+
       .addMatcher(
-        isAnyOf(register.pending, logIn.pending, logOut.pending),
+        isAnyOf(
+          apiRegisterUser.pending,
+          apiLoginUser.pending,
+          apiLogoutUser.pending
+        ),
         (state) => {
           state.isLoading = true;
           state.isError = false;
         }
       )
       .addMatcher(
-        isAnyOf(register.rejected, logIn.rejected, logOut.rejected),
+        isAnyOf(
+          apiRegisterUser.rejected,
+          apiLoginUser.rejected,
+          apiLogoutUser.rejected
+        ),
         (state) => {
           state.isLoading = false;
           state.isError = true;
+          toast.error("Oops! Something went wrong ");
         }
       ),
 });

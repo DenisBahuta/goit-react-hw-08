@@ -1,107 +1,72 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import {
+  requestSignUp,
+  requestSignIn,
+  requestGetCurrentUser,
+  requestLogOut,
+  setToken,
+  clearToken,
+} from "../../services/contactsApi";
 
-// services
-const instance = axios.create({
-  baseURL: "https://connections-api.herokuapp.com",
-});
-
-export const setToken = (token) => {
-  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
-
-export const clearToken = () => {
-  instance.defaults.headers.common.Authorization = "";
-};
-
-export const requestSignUp = async (formData) => {
-  const { data } = await instance.post("/users/signup", formData);
-  setToken(data.token);
-
-  return data;
-};
-
-export const requestSignIn = async (formData) => {
-  const { data } = await instance.post("/users/login", formData);
-  setToken(data.token);
-
-  return data;
-};
-
-export const requestGetCurrentUser = async () => {
-  const { data } = await instance.get("/users/current");
-
-  return data;
-};
-
-export const requestLogOut = async () => {
-  const { data } = await instance.post("/users/logout");
-
-  return data;
-};
-
-//--------------------------RegistrationForm--------------------------//
-export const register = createAsyncThunk(
+export const apiRegisterUser = createAsyncThunk(
   "auth/register",
-  async (formData, thunkAPI) => {
+  async (credentials, thunkAPI) => {
     try {
-      const data = await requestSignUp(formData);
-
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+      const response = await requestSignUp(credentials);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-//--------------------------LoginForm--------------------------------//
-export const logIn = createAsyncThunk(
+export const apiLoginUser = createAsyncThunk(
   "auth/login",
-  async (formData, thunkAPI) => {
+  async (credentials, thunkAPI) => {
     try {
-      const data = await requestSignIn(formData);
+      const response = await requestSignIn(credentials);
 
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-export const refreshUser = createAsyncThunk(
+export const apiRefreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
+    const store = thunkAPI.getState();
+    const token = store.auth.token;
 
     setToken(token);
     try {
-      const data = await requestGetCurrentUser();
-      requestSignIn;
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+      const response = await requestGetCurrentUser();
+
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   },
   {
     condition: (_, thunkAPI) => {
-      const state = thunkAPI.getState();
-      const token = state.auth.token;
-
+      const store = thunkAPI.getState();
+      const token = store.auth.token;
       if (!token) return false;
       return true;
     },
   }
 );
 
-export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
-  try {
-    await requestLogOut();
+export const apiLogoutUser = createAsyncThunk(
+  "auth/loguot",
+  async (_, thunkAPI) => {
+    try {
+      await requestLogOut();
 
-    return;
-  } catch (err) {
-    return thunkAPI.rejectWithValue(err.message);
+      clearToken();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-});
-
-export default instance;
+);

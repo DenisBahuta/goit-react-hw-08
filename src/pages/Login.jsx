@@ -1,21 +1,23 @@
-import DocumentTitle from "../components/DocumentTitle";
 import { useDispatch } from "react-redux";
+import { Helmet } from "react-helmet-async";
+
 import LoginForm from "../components/LoginForm/LoginForm";
-import { logIn } from "../redux/auth/operations";
+import { apiLoginUser } from "../redux/auth/operations";
 
-function Login() {
+const Login = () => {
   const dispatch = useDispatch();
-
   const onLogin = (formData) => {
-    dispatch(logIn(formData));
+    dispatch(apiLoginUser(formData));
   };
 
   return (
     <div>
-      <DocumentTitle>Login</DocumentTitle>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <LoginForm onLogin={onLogin} />
     </div>
   );
-}
+};
 
 export default Login;

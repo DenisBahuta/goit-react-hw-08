@@ -1,67 +1,112 @@
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import css from "./ContactForm.module.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contacts/operations";
+import { useId } from "react";
+import * as Yup from "yup";
+import { apiAddNewUserContact } from "../../redux/contacts/operations";
+import css from "./ContactForm.module.css";
 
-const ContactSchema = Yup.object().shape({
+const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
-    .min(5, "Too Short!")
+    .min(3, "Too Short!")
     .max(50, "Too Long!")
-    .required("Required"),
+    .required("Name is required"),
   number: Yup.string()
-    .min(7, "Too Short!")
+    .min(3, "Too Short!")
     .max(15, "Too Long!")
-    .required("Required"),
+    .required("Number is required"),
 });
 
-const INITIAL_FORM_VALUES = {
+const initialValues = {
   name: "",
   number: "",
 };
 
-function ContactForm() {
+const contacts = [
+  { name: "John Doe", number: "123-45-67" },
+  { name: "Jane Smith", number: "234-56-78" },
+  { name: "Alice Johnson", number: "345-67-89" },
+  { name: "Bob Brown", number: "456-78-90" },
+];
+
+const ContactForm = () => {
   const dispatch = useDispatch();
 
+  const nameId = useId();
+  const numberId = useId();
+
   const handleSubmit = (values, actions) => {
-    dispatch(addContact({ ...values })); // отправляем экшен addContact с данными из формы
-    actions.resetForm(); // сброс формы после отправки
+    dispatch(apiAddNewUserContact(values));
+    actions.resetForm();
   };
 
   return (
     <Formik
-      initialValues={INITIAL_FORM_VALUES}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={ContactSchema}
+      validationSchema={FeedbackSchema}
     >
       <Form className={css.form}>
-        <label className={css.label}>Name</label>
-        <Field
-          className={css.field}
-          placeholder='Adam Smith'
-          type='text'
-          name='name'
-        />
-        <span className={css.errorMessage}>
-          <ErrorMessage name='name' component='span' />
-        </span>
-        <label className={css.label}>Number </label>
-        <Field
-          className={css.field}
-          placeholder='+(380)-000-00-00'
-          type='text'
-          name='number'
-        />
-        <span className={css.errorMessage}>
-          <ErrorMessage name='number' component='span' />
-        </span>
+        <div className={css.inputWrapper}>
+          <label className={css.label} htmlFor={nameId}>
+            Name
+          </label>
 
-        <button className={css.button} type='submit'>
-          Add contact
+          <Field
+            className={css.field}
+            type='text'
+            name='name'
+            id={nameId}
+            placeholder='Enter name'
+            list='usernameList'
+            autoComplete='off'
+          />
+
+          <datalist id='usernameList'>
+            {contacts.map(({ name }, index) => (
+              <option key={index} value={name} />
+            ))}
+          </datalist>
+
+          <ErrorMessage
+            name='name'
+            component='span'
+            className={css.contactError}
+          ></ErrorMessage>
+        </div>
+
+        <div className={css.inputWrapper}>
+          <label className={css.label} htmlFor={numberId}>
+            Number
+          </label>
+
+          <Field
+            className={css.field}
+            type='text'
+            name='number'
+            id={numberId}
+            placeholder='Enter number'
+            list='numberList'
+            autoComplete='off'
+          />
+
+          <datalist id='numberList'>
+            {contacts.map(({ number }, index) => (
+              <option key={index} value={number} />
+            ))}
+          </datalist>
+
+          <ErrorMessage
+            name='number'
+            component='span'
+            className={css.contactError}
+          ></ErrorMessage>
+        </div>
+        <button className={css.submitBtn} type='submit'>
+          Add Contact
         </button>
       </Form>
     </Formik>
   );
-}
+};
 
 export default ContactForm;

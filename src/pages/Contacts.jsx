@@ -1,27 +1,35 @@
-import { Helmet } from "react-helmet-async";
-import ContactForm from "../components/ContactForm/ContactForm";
-import SearchBox from "../components/SearchBox/SearchBox";
-import ContactList from "../components/ContactList/ContactList";
-import { fetchContacts } from "../redux/contacts/operations";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+
+import ContactForm from "../components/ContactForm/ContactForm";
+import ContactList from "../components/ContactList/ContactList";
+import SearchBox from "../components/SearchBox/SearchBox";
+
+import { selectIsLoading, selectIsError } from "../redux/contacts/selectors";
+import { apiGetUserContacts } from "../redux/contacts/operations";
 
 const Contacts = () => {
   const dispatch = useDispatch();
+  const isError = useSelector(selectIsError);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(apiGetUserContacts());
   }, [dispatch]);
 
   return (
-    <div>
+    <>
       <Helmet>
-        <title>Contacts</title>
+        <title>Phonebook</title>
       </Helmet>
+
       <ContactForm />
       <SearchBox />
-      <ContactList />
-    </div>
+      {isLoading && !isError && <b>Request in progress...</b>}
+      {!isLoading && <ContactList />}
+    </>
   );
 };
 

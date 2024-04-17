@@ -1,78 +1,70 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
-  addContact,
-  deleteContact,
-  editContact,
-  fetchContacts,
+  apiGetUserContacts,
+  apiAddNewUserContact,
+  apiDeleteUserContact,
+  apiUpdateUserContact,
 } from "./operations";
-import { logOut } from "../auth/operations";
+import { toast } from "react-hot-toast";
 
 const INITIAL_STATE = {
-  items: [],
+  contacts: null,
   isLoading: false,
-  error: null,
+  isError: false,
 };
 
-const handlePending = (state) => {
-  state.isLoading = true;
-};
-
-const handleRejected = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
-};
-
-const contactsSlice = createSlice({
-  name: "contacts",
+const phonebookSlice = createSlice({
+  name: "phonebook",
   initialState: INITIAL_STATE,
-
-  extraReducers: (builder) => {
+  extraReducers: (builder) =>
     builder
-
-      .addCase(fetchContacts.pending, handlePending)
-      .addCase(fetchContacts.fulfilled, (state, action) => {
+      .addCase(apiGetUserContacts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
-        state.items = action.payload;
+        state.contacts = action.payload;
       })
-      .addCase(fetchContacts.rejected, handleRejected)
-
-      .addCase(addContact.pending, handlePending)
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(apiAddNewUserContact.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
-        state.items.push(action.payload);
+        state.contacts.push(action.payload);
+        toast.success("Added a new contact");
       })
-      .addCase(addContact.rejected, handleRejected)
-
-      .addCase(deleteContact.pending, handlePending)
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(apiDeleteUserContact.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
-        const index = state.items.findIndex(
-          (contact) => contact.id === action.payload.id
+        state.contacts = state.contacts.filter(
+          (contact) => contact.id !== action.payload.id
         );
-        state.items.splice(index, 1);
+        toast.success("Removed a contact");
       })
-      .addCase(deleteContact.rejected, handleRejected)
-      .addCase(logOut.fulfilled, (state) => {
-        state.items = [];
-        state.error = null;
+      .addCase(apiUpdateUserContact.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.contacts = state.contacts.map((contact) =>
+          contact.id === action.payload.id ? action.payload : contact
+        );
+        toast.success("Updated a contact");
       })
-      .addCase(editContact.pending, handlePending)
-      .addCase(editContact.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.items.find((contact) => {
-          if (contact.id === payload.id) {
-            contact.name = payload.name;
-            contact.number = payload.number;
-          }
-        });
-      })
-      .addCase(editContact.rejected, handleRejected);
-  },
+
+      .addMatcher(
+        isAnyOf(
+          apiGetUserContacts.pending,
+          apiAddNewUserContact.pending,
+          apiDeleteUserContact.pending
+        ),
+        (state) => {
+          state.isLoading = true;
+          state.isError = false;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          apiGetUserContacts.rejected,
+          apiAddNewUserContact.rejected,
+          apiDeleteUserContact.rejected
+        ),
+        (state) => {
+          state.isLoading = false;
+          state.isError = true;
+          toast.error("Oops! Something went wrong ");
+        }
+      ),
 });
 
-export const contactsReducer = contactsSlice.reducer;
+export const phonebookReducer = phonebookSlice.reducer;
