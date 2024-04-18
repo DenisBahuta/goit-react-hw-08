@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 const INITIAL_STATE = {
   user: null,
   token: null,
-  isSignedIn: false,
+  isLoggedIn: false,
   isRefreshing: false,
   isLoading: false,
   isError: false,
@@ -25,16 +25,16 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isSignedIn = true;
-        toast.success("You have registered✅");
+        state.isLoggedIn = true;
+        toast.success("You have registered");
       })
 
       .addCase(apiLoginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isSignedIn = true;
-        toast.success("You are logged in✅");
+        state.isLoggedIn = true;
+        toast.success("You are logged in");
       })
 
       .addCase(apiRefreshUser.pending, (state) => {
@@ -44,15 +44,17 @@ const authSlice = createSlice({
       .addCase(apiRefreshUser.fulfilled, (state, action) => {
         state.isRefreshing = false;
         state.user = action.payload;
-        state.isSignedIn = true;
+        state.isLoggedIn = true;
       })
       .addCase(apiRefreshUser.rejected, (state) => {
         state.isRefreshing = false;
         state.isError = true;
       })
 
-      .addCase(apiLogoutUser.fulfilled, () => {
-        return INITIAL_STATE;
+      .addCase(apiLogoutUser.fulfilled, (state) => {
+        state.user = { name: null, email: null };
+        state.token = null;
+        state.isLoggedIn = false;
       })
 
       .addMatcher(

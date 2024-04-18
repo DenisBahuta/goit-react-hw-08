@@ -3,14 +3,14 @@ import { Helmet } from "react-helmet-async";
 import { useAuth } from "../hooks/useAuth";
 
 const Home = () => {
-  const { isSignedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <div>
       <Helmet>
         <title>PHONE BOOK 📞📖</title>
       </Helmet>
-      {isSignedIn ? (
+      {isLoggedIn ? (
         <Link to='/contacts' relative='path'>
           You can use your contacts
         </Link>

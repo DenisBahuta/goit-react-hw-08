@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PropTypes from "prop-types";
 
-import css from "./RegisterForm.module.css";
+import css from "./RegistrationForm.module.css";
 
 const UserRegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -26,7 +26,7 @@ const initialValues = {
   name: "",
 };
 
-const RegisterForm = ({ onRegister }) => {
+const RegistrationForm = ({ onRegister }) => {
   const handleSubmit = (values, actions) => {
     onRegister(values);
     actions.resetForm();
@@ -39,7 +39,7 @@ const RegisterForm = ({ onRegister }) => {
         onSubmit={handleSubmit}
       >
         <Form className={css.form}>
-          <h2>Register</h2>
+          <h2>Registration</h2>
 
           <label className={css.label}>
             <span>Name</span>
@@ -83,7 +83,7 @@ const RegisterForm = ({ onRegister }) => {
   );
 };
 
-RegisterForm.propTypes = {
+RegistrationForm.propTypes = {
   onRegister: PropTypes.func.isRequired,
 };
-export default RegisterForm;
+export default RegistrationForm;

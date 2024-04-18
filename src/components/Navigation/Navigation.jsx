@@ -3,11 +3,11 @@ import css from "./Navigation.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
 const Navigation = () => {
-  const { isSignedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <nav className={css.link}>
       <NavLink to='/'>Home</NavLink>
-      {isSignedIn && <NavLink to='/contacts'>Contacts</NavLink>}
+      {isLoggedIn && <NavLink to='/contacts'>Contacts</NavLink>}
     </nav>
   );
 };

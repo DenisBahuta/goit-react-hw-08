@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 
-import RegisterForm from "../components/RegisterForm/RegisterForm";
+import RegistrationForm from "../components/RegistrationForm/RegistrationForm";
 import { apiRegisterUser } from "../redux/auth/operations";
 import { Helmet } from "react-helmet-async";
 
@@ -16,7 +16,7 @@ const Register = () => {
         <title>Register</title>
       </Helmet>
 
-      <RegisterForm onRegister={onRegister} />
+      <RegistrationForm onRegister={onRegister} />
     </div>
   );
 };
