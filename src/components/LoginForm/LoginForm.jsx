@@ -1,6 +1,8 @@
 import css from "./LoginForm.module.css";
 import { Field, Form, Formik } from "formik";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { apiLoginUser } from "../../redux/auth/operations";
 
 const UserLoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -16,7 +18,12 @@ const INITIAL_FORM_DATA = {
   password: "",
 };
 
-function LoginForm({ onLogin }) {
+const LoginForm = () => {
+  const dispatch = useDispatch();
+
+  const onLogin = (formData) => {
+    dispatch(apiLoginUser(formData));
+  };
   const handleSubmit = (data, formActions) => {
     onLogin(data);
     formActions.resetForm();
@@ -52,6 +59,6 @@ function LoginForm({ onLogin }) {
       </Form>
     </Formik>
   );
-}
+};
 
 export default LoginForm;

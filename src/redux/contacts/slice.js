@@ -6,15 +6,16 @@ import {
   apiUpdateUserContact,
 } from "./operations";
 import { toast } from "react-hot-toast";
+import { apiLogoutUser } from "../auth/operations";
 
 const INITIAL_STATE = {
-  contacts: null,
+  contacts: [],
   isLoading: false,
   isError: false,
 };
 
-const phonebookSlice = createSlice({
-  name: "phonebook",
+const contactsSlice = createSlice({
+  name: "contacts",
   initialState: INITIAL_STATE,
   extraReducers: (builder) =>
     builder
@@ -40,6 +41,11 @@ const phonebookSlice = createSlice({
           contact.id === action.payload.id ? action.payload : contact
         );
         toast.success("Updated a contact");
+      })
+      .addCase(apiLogoutUser.fulfilled, (state) => {
+        state.contacts = [];
+        state.isLoading = false;
+        state.isError = null;
       })
 
       .addMatcher(
@@ -67,4 +73,4 @@ const phonebookSlice = createSlice({
       ),
 });
 
-export const phonebookReducer = phonebookSlice.reducer;
+export const contactsReducer = contactsSlice.reducer;

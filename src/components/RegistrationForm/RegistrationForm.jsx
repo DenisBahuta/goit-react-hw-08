@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import PropTypes from "prop-types";
 
 import css from "./RegistrationForm.module.css";
+import { useDispatch } from "react-redux";
+import { apiRegisterUser } from "../../redux/auth/operations";
 
 const UserRegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -26,10 +28,16 @@ const initialValues = {
   name: "",
 };
 
-const RegistrationForm = ({ onRegister }) => {
-  const handleSubmit = (values, actions) => {
-    onRegister(values);
-    actions.resetForm();
+const RegistrationForm = () => {
+  const dispatch = useDispatch();
+
+  const onRegister = (formData) => {
+    dispatch(apiRegisterUser(formData));
+  };
+
+  const handleSubmit = (data, formActions) => {
+    onRegister(data);
+    formActions.resetForm();
   };
   return (
     <div className={css.wrapper}>
